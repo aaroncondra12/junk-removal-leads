@@ -1,591 +1,300 @@
-.page {
-  min-height: 100vh;
-  color: #111827;
-  background:
-    radial-gradient(900px 600px at 20% 0%, rgba(255, 168, 208, 0.22), transparent 60%),
-    radial-gradient(900px 700px at 85% 15%, rgba(160, 210, 255, 0.25), transparent 60%),
-    linear-gradient(180deg, #fff 0%, #fbf7ff 55%, #fff 100%);
-}
-
-.nav {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 18px 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logoMark {
-  width: 40px;
-  height: 40px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  color: #111827;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(17, 24, 39, 0.08);
-  box-shadow: 0 12px 30px rgba(17, 24, 39, 0.10);
-}
-
-.brandName {
-  font-weight: 900;
-  letter-spacing: -0.2px;
-}
-
-.brandSub {
-  font-size: 12px;
-  color: rgba(17, 24, 39, 0.65);
-}
-
-.navLinks {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.navLinks a {
-  text-decoration: none;
-  color: rgba(17, 24, 39, 0.75);
-  font-weight: 700;
-  font-size: 13px;
-}
-
-.navCtas {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.primaryBtn,
-.ghostBtn,
-.primaryBtnLg,
-.ghostBtnLg {
-  border: 1px solid rgba(17, 24, 39, 0.10);
-  border-radius: 999px;
-  padding: 10px 14px;
-  text-decoration: none;
-  font-weight: 850;
-  font-size: 13px;
-}
-
-.primaryBtn,
-.primaryBtnLg {
-  color: #111827;
-  background: linear-gradient(135deg, rgba(255, 168, 208, 0.85), rgba(160, 210, 255, 0.85));
-  box-shadow: 0 14px 34px rgba(17, 24, 39, 0.14);
-}
-
-.ghostBtn,
-.ghostBtnLg {
-  background: rgba(255, 255, 255, 0.65);
-  color: rgba(17, 24, 39, 0.85);
-}
-
-.primaryBtnLg,
-.ghostBtnLg {
-  padding: 12px 18px;
-  font-size: 14px;
-}
-
-.hero {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 6px 22px 18px;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 20px;
-  align-items: center;
-}
-
-.heroLeft {
-  padding: 18px 0;
-}
-
-.kicker {
-  display: inline-block;
-  font-size: 12px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(17, 24, 39, 0.55);
-  margin-bottom: 10px;
-}
-
-.h1 {
-  font-size: clamp(34px, 4vw, 56px);
-  line-height: 1.02;
-  letter-spacing: -0.9px;
-  margin: 0 0 10px;
-}
-
-.h1Accent {
-  background: linear-gradient(135deg, #ff6fb5, #5aa8ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.lead {
-  margin: 0 0 16px;
-  color: rgba(17, 24, 39, 0.68);
-  font-weight: 650;
-  max-width: 56ch;
-}
-
-.heroCtas {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 14px 0 18px;
-}
-
-.trustRow {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-.trustItem {
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(17, 24, 39, 0.08);
-  border-radius: 18px;
-  padding: 12px 14px;
-  min-width: 160px;
-  box-shadow: 0 12px 28px rgba(17, 24, 39, 0.08);
-}
-
-.trustTitle {
-  font-weight: 900;
-}
-
-.trustSub {
-  font-size: 12px;
-  color: rgba(17, 24, 39, 0.62);
-  margin-top: 2px;
-}
-
-.heroRight {
-  position: relative;
-  padding: 18px 0;
-}
-
-.collage {
-  position: relative;
-  height: 520px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(17, 24, 39, 0.08);
-  box-shadow: 0 18px 44px rgba(17, 24, 39, 0.12);
-  overflow: hidden;
-}
-
-.collageCard,
-.collageCardTall,
-.collageCardSmall {
-  position: absolute;
-  border-radius: 22px;
-  overflow: hidden;
-  border: 1px solid rgba(17, 24, 39, 0.10);
-  box-shadow: 0 14px 36px rgba(17, 24, 39, 0.18);
-}
-
-.collageCard img,
-.collageCardTall img,
-.collageCardSmall img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.collageCard {
-  width: 58%;
-  height: 46%;
-  left: 8%;
-  top: 10%;
-  transform: rotate(-2deg);
-}
-
-.collageCardTall {
-  width: 46%;
-  height: 64%;
-  right: 8%;
-  top: 14%;
-  transform: rotate(2deg);
-}
-
-.collageCardSmall {
-  width: 44%;
-  height: 30%;
-  left: 18%;
-  bottom: 10%;
-  transform: rotate(1deg);
-}
-
-.floatingTag,
-.floatingTag2 {
-  position: absolute;
-  padding: 10px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(17, 24, 39, 0.10);
-  box-shadow: 0 14px 32px rgba(17, 24, 39, 0.12);
-  font-weight: 900;
-  font-size: 12px;
-}
-
-.floatingTag {
-  left: 12%;
-  top: 6%;
-}
-
-.floatingTag2 {
-  right: 12%;
-  bottom: 7%;
-}
-
-.section,
-.sectionAlt {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 28px 22px;
-}
-
-.sectionAlt {
-  padding: 34px 22px;
-  border-top: 1px solid rgba(17, 24, 39, 0.06);
-  border-bottom: 1px solid rgba(17, 24, 39, 0.06);
-  background: rgba(255, 255, 255, 0.55);
-  border-radius: 34px;
-}
-
-.sectionTop {
-  display: grid;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-
-.h2 {
-  margin: 0;
-  font-size: 26px;
-  letter-spacing: -0.4px;
-}
-
-.subtext {
-  margin: 0;
-  color: rgba(17, 24, 39, 0.62);
-  font-weight: 650;
-}
-
-.productRow {
-  display: grid;
-  gap: 14px;
-}
-
-.productCard {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 14px;
-  background: rgba(255, 255, 255, 0.70);
-  border: 1px solid rgba(17, 24, 39, 0.08);
-  border-radius: 26px;
-  overflow: hidden;
-  box-shadow: 0 16px 40px rgba(17, 24, 39, 0.10);
-}
-
-.productImageWrap {
-  position: relative;
-  min-height: 220px;
-}
-
-.productImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(17, 24, 39, 0.10);
-  font-weight: 900;
-  font-size: 12px;
-}
-
-.productMeta {
-  padding: 16px 16px 16px 4px;
-  display: grid;
-  align-content: center;
-  gap: 6px;
-}
-
-.productTitle {
-  font-weight: 950;
-  font-size: 18px;
-}
-
-.productTagline {
-  color: rgba(17, 24, 39, 0.62);
-  font-weight: 650;
-}
-
-.productBottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.price {
-  font-weight: 950;
-  font-size: 16px;
-}
-
-.addBtn {
-  border: 1px solid rgba(17, 24, 39, 0.10);
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 900;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.70);
-}
-
-.centerCta {
-  margin-top: 14px;
-  display: flex;
-  justify-content: center;
-}
-
-.storyGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.storyCard {
-  border-radius: 28px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.70);
-  border: 1px solid rgba(17, 24, 39, 0.08);
-  box-shadow: 0 16px 40px rgba(17, 24, 39, 0.10);
-}
-
-.storyImage {
-  height: 240px;
-}
-
-.storyImage img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.storyBody {
-  padding: 16px;
-  display: grid;
-  gap: 6px;
-}
-
-.storyTitle {
-  font-weight: 950;
-  font-size: 18px;
-}
-
-.storyDesc {
-  color: rgba(17, 24, 39, 0.62);
-  font-weight: 650;
-}
-
-.storyLink {
-  margin-top: 6px;
-  font-weight: 950;
-  text-decoration: none;
-  color: #111827;
-}
-
-.quoteBlock {
-  margin-top: 16px;
-  border-radius: 28px;
-  padding: 18px 18px 16px;
-  background: linear-gradient(135deg, rgba(255, 168, 208, 0.30), rgba(160, 210, 255, 0.28));
-  border: 1px solid rgba(17, 24, 39, 0.08);
-  box-shadow: 0 18px 44px rgba(17, 24, 39, 0.10);
-}
-
-.quoteMark {
-  font-size: 46px;
-  line-height: 1;
-  font-weight: 900;
-  opacity: 0.35;
-}
-
-.quoteText {
-  font-weight: 900;
-  font-size: 18px;
-  letter-spacing: -0.2px;
-  margin-top: -6px;
-}
-
-.quoteBy {
-  margin-top: 8px;
-  color: rgba(17, 24, 39, 0.62);
-  font-weight: 700;
-  font-size: 13px;
-}
-
-.newsletter {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(17, 24, 39, 0.08);
-  border-radius: 28px;
-  padding: 18px;
-  box-shadow: 0 16px 40px rgba(17, 24, 39, 0.10);
-}
-
-.newsKicker {
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(17, 24, 39, 0.55);
-  font-weight: 900;
-}
-
-.newsTitle {
-  font-weight: 950;
-  font-size: 20px;
-  margin-top: 6px;
-}
-
-.newsSub {
-  color: rgba(17, 24, 39, 0.62);
-  font-weight: 650;
-  margin-top: 4px;
-}
-
-.newsForm {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.newsInput {
-  border: 1px solid rgba(17, 24, 39, 0.12);
-  border-radius: 999px;
-  padding: 12px 14px;
-  min-width: 260px;
-  outline: none;
-  background: rgba(255, 255, 255, 0.85);
-}
-
-.faq {
-  display: grid;
-  gap: 10px;
-}
-
-.details {
-  background: rgba(255, 255, 255, 0.70);
-  border: 1px solid rgba(17, 24, 39, 0.08);
-  border-radius: 22px;
-  padding: 14px 16px;
-  box-shadow: 0 14px 34px rgba(17, 24, 39, 0.08);
-}
-
-.summary {
-  cursor: pointer;
-  font-weight: 950;
-}
-
-.answer {
-  margin: 10px 0 0;
-  color: rgba(17, 24, 39, 0.62);
-  font-weight: 650;
-}
-
-.footer {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 20px 22px 28px;
-}
-
-.footerRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  border-top: 1px solid rgba(17, 24, 39, 0.08);
-  padding-top: 16px;
-}
-
-.footerBrand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.footerLinks {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-}
-
-.footerLinks a {
-  text-decoration: none;
-  color: rgba(17, 24, 39, 0.70);
-  font-weight: 800;
-  font-size: 13px;
-}
-
-.footerBottom {
-  margin-top: 10px;
-  color: rgba(17, 24, 39, 0.60);
-  font-size: 12px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.dot {
-  opacity: 0.5;
-}
-
-@media (max-width: 980px) {
-  .navLinks {
-    display: none;
-  }
-  .hero {
-    grid-template-columns: 1fr;
-  }
-  .collage {
-    height: 440px;
-  }
-  .productCard {
-    grid-template-columns: 1fr;
-  }
-  .productMeta {
-    padding: 14px 16px 16px;
-  }
-  .storyGrid {
-    grid-template-columns: 1fr;
-  }
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+
+const products = [
+  {
+    id: "p1",
+    name: "Silk Sleep Set",
+    tagline: "Pillowcase + scrunchie bundle",
+    price: "$29",
+    badge: "Best Seller",
+    img: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=1600&q=70",
+  },
+  {
+    id: "p2",
+    name: "Minimal Gold Hoops",
+    tagline: "Everyday, lightweight",
+    price: "$18",
+    badge: "New",
+    img: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=1600&q=70",
+  },
+  {
+    id: "p3",
+    name: "Glow Body Oil",
+    tagline: "Non-greasy, soft shimmer",
+    price: "$24",
+    badge: "Trending",
+    img: "https://images.unsplash.com/photo-1629198735660-e39ea4a03b24?auto=format&fit=crop&w=1600&q=70",
+  },
+];
+
+const collections = [
+  {
+    title: "Self-care staples",
+    desc: "Simple, repeat-buy items with high margin and low returns.",
+    img: "https://images.unsplash.com/photo-1615397349754-cfa2066a298e?auto=format&fit=crop&w=1600&q=70",
+  },
+  {
+    title: "Quiet luxury accessories",
+    desc: "Minimal pieces that look expensive without the price tag.",
+    img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1600&q=70",
+  },
+];
+
+const faqs = [
+  {
+    q: "Do you ship nationwide?",
+    a: "Yes — standard shipping is available across the U.S. Expedited options can be added later.",
+  },
+  {
+    q: "What’s your return policy?",
+    a: "30 days for unused items in original packaging. Final sale items are excluded (if listed).",
+  },
+  {
+    q: "How do I track my order?",
+    a: "After checkout you’ll get an email with a tracking link as soon as your order ships.",
+  },
+];
+
+export default function Home() {
+  return (
+    <>
+      <Head>
+        <title>Glow & Co | Boutique Finds</title>
+        <meta
+          name="description"
+          content="Aesthetic boutique finds for women — self-care, accessories, and everyday favorites."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+
+      <div className={styles.page}>
+        <header className={styles.nav}>
+          <div className={styles.brand}>
+            <div className={styles.logoMark} aria-hidden="true">
+              G
+            </div>
+            <div>
+              <div className={styles.brandName}>Glow & Co</div>
+              <div className={styles.brandSub}>Boutique Finds</div>
+            </div>
+          </div>
+
+          <nav className={styles.navLinks}>
+            <a href="#shop">Shop</a>
+            <a href="#collections">Collections</a>
+            <a href="#faq">FAQ</a>
+          </nav>
+
+          <div className={styles.navCtas}>
+            <a className={styles.ghostBtn} href="#shop">
+              Browse
+            </a>
+            <a className={styles.primaryBtn} href="#shop">
+              Shop now
+            </a>
+          </div>
+        </header>
+
+        <section className={styles.hero}>
+          <div className={styles.heroLeft}>
+            <div className={styles.kicker}>Soft • Clean • Feminine</div>
+            <h1 className={styles.h1}>
+              Boutique essentials that feel
+              <span className={styles.h1Accent}> expensive</span> (without being expensive).
+            </h1>
+            <p className={styles.lead}>
+              A curated shop of repeat-buy favorites: self-care staples, minimal accessories,
+              and cozy lifestyle picks.
+            </p>
+
+            <div className={styles.heroCtas}>
+              <a className={styles.primaryBtnLg} href="#shop">
+                Shop best sellers
+              </a>
+              <a className={styles.ghostBtnLg} href="#collections">
+                Explore collections
+              </a>
+            </div>
+
+            <div className={styles.trustRow}>
+              <div className={styles.trustItem}>
+                <div className={styles.trustTitle}>Fast shipping</div>
+                <div className={styles.trustSub}>2–5 business days</div>
+              </div>
+              <div className={styles.trustItem}>
+                <div className={styles.trustTitle}>Easy returns</div>
+                <div className={styles.trustSub}>30-day window</div>
+              </div>
+              <div className={styles.trustItem}>
+                <div className={styles.trustTitle}>Curated</div>
+                <div className={styles.trustSub}>Only top sellers</div>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.heroRight} aria-hidden="true">
+            <div className={styles.collage}>
+              <div className={styles.collageCard}>
+                <img
+                  src="https://images.unsplash.com/photo-1520975968161-7c3d9b3bb6d0?auto=format&fit=crop&w=1600&q=70"
+                  alt=""
+                />
+              </div>
+              <div className={styles.collageCardTall}>
+                <img
+                  src="https://images.unsplash.com/photo-1526045478516-99145907023c?auto=format&fit=crop&w=1600&q=70"
+                  alt=""
+                />
+              </div>
+              <div className={styles.collageCardSmall}>
+                <img
+                  src="https://images.unsplash.com/photo-1520975682031-a6ad0f3b9fd9?auto=format&fit=crop&w=1600&q=70"
+                  alt=""
+                />
+              </div>
+              <div className={styles.floatingTag}>New drops weekly</div>
+              <div className={styles.floatingTag2}>Best sellers • In stock</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="shop" className={styles.section}>
+          <div className={styles.sectionTop}>
+            <h2 className={styles.h2}>Best sellers</h2>
+            <p className={styles.subtext}>The “easy yes” items customers re-order.</p>
+          </div>
+
+          <div className={styles.productRow}>
+            {products.map((p) => (
+              <article key={p.id} className={styles.productCard}>
+                <div className={styles.productImageWrap}>
+                  <img className={styles.productImage} src={p.img} alt={p.name} />
+                  <div className={styles.badge}>{p.badge}</div>
+                </div>
+
+                <div className={styles.productMeta}>
+                  <div className={styles.productTitle}>{p.name}</div>
+                  <div className={styles.productTagline}>{p.tagline}</div>
+
+                  <div className={styles.productBottom}>
+                    <div className={styles.price}>{p.price}</div>
+                    <button
+                      className={styles.addBtn}
+                      onClick={() => alert("Hook this to checkout later (Stripe/Shopify).")}
+                    >
+                      Add to cart
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className={styles.centerCta}>
+            <a className={styles.primaryBtn} href="#collections">
+              View collections
+            </a>
+          </div>
+        </section>
+
+        <section id="collections" className={styles.sectionAlt}>
+          <div className={styles.sectionTop}>
+            <h2 className={styles.h2}>Shop by vibe</h2>
+            <p className={styles.subtext}>Editorial-style collections (not a wall of products).</p>
+          </div>
+
+          <div className={styles.storyGrid}>
+            {collections.map((c) => (
+              <div key={c.title} className={styles.storyCard}>
+                <div className={styles.storyImage}>
+                  <img src={c.img} alt={c.title} />
+                </div>
+                <div className={styles.storyBody}>
+                  <div className={styles.storyTitle}>{c.title}</div>
+                  <div className={styles.storyDesc}>{c.desc}</div>
+                  <a className={styles.storyLink} href="#shop">
+                    Shop this collection →
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.quoteBlock}>
+            <div className={styles.quoteMark}>“</div>
+            <div className={styles.quoteText}>
+              The goal is effortless: fewer choices, better picks, faster checkout.
+            </div>
+            <div className={styles.quoteBy}>— Glow & Co</div>
+          </div>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.newsletter}>
+            <div>
+              <div className={styles.newsKicker}>Get 10% off your first order</div>
+              <div className={styles.newsTitle}>Join the list for new drops.</div>
+              <div className={styles.newsSub}>No spam. Just best sellers and restocks.</div>
+            </div>
+
+            <form
+              className={styles.newsForm}
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert("Connect to Mailchimp/Klaviyo later.");
+              }}
+            >
+              <input className={styles.newsInput} type="email" placeholder="you@example.com" required />
+              <button className={styles.primaryBtn} type="submit">
+                Get code
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <section id="faq" className={styles.sectionAlt}>
+          <div className={styles.sectionTop}>
+            <h2 className={styles.h2}>FAQ</h2>
+            <p className={styles.subtext}>Quick answers reduce drop-offs.</p>
+          </div>
+
+          <div className={styles.faq}>
+            {faqs.map((f) => (
+              <details key={f.q} className={styles.details}>
+                <summary className={styles.summary}>{f.q}</summary>
+                <p className={styles.answer}>{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <footer className={styles.footer}>
+          <div className={styles.footerRow}>
+            <div className={styles.footerBrand}>
+              <div className={styles.logoMark} aria-hidden="true">
+                G
+              </div>
+              <div>
+                <div className={styles.brandName}>Glow & Co</div>
+                <div className={styles.brandSub}>Boutique Finds</div>
+              </div>
+            </div>
+
+            <div className={styles.footerLinks}>
+              <a href="#shop">Shop</a>
+              <a href="#collections">Collections</a>
+              <a href="#faq">FAQ</a>
+            </div>
+          </div>
+
+          <div className={styles.footerBottom}>
+            <span>© {new Date().getFullYear()} Glow & Co</span>
+            <span className={styles.dot}>•</span>
+            <span>Designed for conversion + aesthetic</span>
+          </div>
+        </footer>
+      </div>
+    </>
+  );
 }
