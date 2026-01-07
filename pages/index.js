@@ -1,479 +1,780 @@
 // pages/index.js
 import Head from "next/head";
+import { useMemo, useState } from "react";
+
+const BRAND = "Luna & Bloom";
+const TAGLINE = "Everyday essentials, curated for calm + confidence.";
+
+const PRODUCTS = [
+  {
+    id: "p1",
+    name: "Silk Sleep Scrunchie Set",
+    price: 18,
+    badge: "Best seller",
+    desc: "Gentle hold. No creases. Hair-friendly shine.",
+    color: "Rose / Ivory",
+  },
+  {
+    id: "p2",
+    name: "Minimal Gold Initial Necklace",
+    price: 29,
+    badge: "Most gifted",
+    desc: "Simple, personal, and easy to wear every day.",
+    color: "14K Gold-Plated",
+  },
+  {
+    id: "p3",
+    name: "Self-Care Journal (90 Days)",
+    price: 24,
+    badge: "New",
+    desc: "Short prompts that build clarity and momentum.",
+    color: "Soft Linen Cover",
+  },
+  {
+    id: "p4",
+    name: "Reusable Makeup Remover Pads",
+    price: 14,
+    badge: "Eco pick",
+    desc: "Soft, washable, and actually removes makeup.",
+    color: "8-Pack",
+  },
+  {
+    id: "p5",
+    name: "Aromatherapy Shower Steamers",
+    price: 22,
+    badge: "Relax",
+    desc: "Turn showers into spa moments in 60 seconds.",
+    color: "Eucalyptus Mix",
+  },
+  {
+    id: "p6",
+    name: "Tote Bag: “Doing My Best”",
+    price: 19,
+    badge: "POD",
+    desc: "Cute, durable, and made-to-order. No inventory.",
+    color: "Natural Canvas",
+  },
+];
+
+function formatMoney(n) {
+  return `$${n.toFixed(2)}`;
+}
 
 export default function Home() {
-  const year = new Date().getFullYear();
+  const [cart, setCart] = useState({}); // { [id]: qty }
+  const [email, setEmail] = useState("");
+  const [coupon, setCoupon] = useState("");
+
+  const cartItems = useMemo(() => {
+    return Object.entries(cart)
+      .map(([id, qty]) => {
+        const p = PRODUCTS.find((x) => x.id === id);
+        return p ? { ...p, qty } : null;
+      })
+      .filter(Boolean);
+  }, [cart]);
+
+  const subtotal = useMemo(() => {
+    return cartItems.reduce((sum, it) => sum + it.price * it.qty, 0);
+  }, [cartItems]);
+
+  const discount = useMemo(() => {
+    if (coupon.trim().toUpperCase() === "BLOOM10") return subtotal * 0.1;
+    return 0;
+  }, [coupon, subtotal]);
+
+  const total = Math.max(0, subtotal - discount);
+
+  const addToCart = (id) => {
+    setCart((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+  };
+
+  const removeFromCart = (id) => {
+    setCart((prev) => {
+      const next = { ...prev };
+      const qty = next[id] || 0;
+      if (qty <= 1) delete next[id];
+      else next[id] = qty - 1;
+      return next;
+    });
+  };
+
+  const clearCart = () => setCart({});
+
+  const checkout = () => {
+    // Placeholder checkout (no payment processor wired yet).
+    // Later: swap this with Stripe Checkout link or Shopify buy button.
+    const lines = cartItems
+      .map((it) => `${it.qty}x ${it.name} (${formatMoney(it.price)})`)
+      .join("%0A");
+    const note = `Order request:%0A${lines}%0A%0ASubtotal: ${formatMoney(
+      subtotal
+    )}%0ADiscount: -${formatMoney(discount)}%0ATotal: ${formatMoney(total)}`;
+
+    // Use your email or a form endpoint later; for now we open a mail draft.
+    window.location.href = `mailto:YOUR_EMAIL_HERE@example.com?subject=${encodeURIComponent(
+      `${BRAND} — Order Request`
+    )}&body=${note}`;
+  };
+
+  const joinWaitlist = (e) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    // Simple “mailto” capture; later replace with FormSubmit / Google Form / Mailchimp.
+    window.location.href = `mailto:YOUR_EMAIL_HERE@example.com?subject=${encodeURIComponent(
+      `${BRAND} — Waitlist`
+    )}&body=${encodeURIComponent(`Please add me to the waitlist: ${email}`)}`;
+    setEmail("");
+  };
 
   return (
     <>
       <Head>
-        <title>Fast Junk Removal Quotes | Same-Day Pickup Available</title>
-        <meta
-          name="description"
-          content="Get a fast junk removal quote. Same-day and next-day pickup available. Furniture, appliances, yard waste, construction debris, and more."
-        />
+        <title>{BRAND} | Curated essentials for women</title>
+        <meta name="description" content={TAGLINE} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <div className="wrap">
-        <div className="topbar">
-          <div className="brand">
-            <div className="logoBox">JR</div>
-            <div>
-              Local Junk Removal Quotes
-              <div className="badge">Tracy • Manteca • Stockton • Modesto</div>
-            </div>
-          </div>
-
-          <div className="ctaRow">
-            <a className="btn secondary" href="#quote">
-              Get a Quote
-            </a>
-            <a className="btn primary" href="tel:+12090000000">
-              Call Now
-            </a>
-          </div>
-        </div>
-
-        <div className="hero">
-          <div className="panel heroLeft">
-            <p className="kicker">Fast • Local • No hassle</p>
-            <h1>Get a Junk Removal Quote in Minutes</h1>
-            <p className="sub">
-              Tell us what you need removed and your location. We’ll connect you with a
-              local provider for a fast estimate and scheduling.
-            </p>
-
-            <div className="bullets">
-              <div className="pill">Same-day / next-day pickup</div>
-              <div className="pill">Upfront estimates</div>
-              <div className="pill">Furniture • appliances • yard waste</div>
-              <div className="pill">Construction debris • cleanouts</div>
+      <div className="page">
+        <header className="header">
+          <div className="wrap headerRow">
+            <div className="brand">
+              <div className="mark" aria-hidden="true" />
+              <div>
+                <div className="brandName">{BRAND}</div>
+                <div className="brandTag">{TAGLINE}</div>
+              </div>
             </div>
 
-            <p className="note">
-              Looking for ongoing services? Ask about recurring pickup options for landlords
-              and contractors.
-            </p>
+            <nav className="nav">
+              <a href="#shop">Shop</a>
+              <a href="#why">Why us</a>
+              <a href="#faq">FAQ</a>
+            </nav>
+
+            <button className="cartBtn" onClick={() => document.getElementById("cart")?.scrollIntoView({ behavior: "smooth" })}>
+              Cart <span className="cartCount">{cartItems.reduce((s, x) => s + x.qty, 0)}</span>
+            </button>
           </div>
+        </header>
 
-          <div id="quote" className="panel formBox">
-            <p className="formTitle">Request Your Quote</p>
-            <p className="formSub">
-              Best response times: 8am–7pm. We usually reply within 10–30 minutes.
-            </p>
+        <main className="wrap">
+          <section className="hero">
+            <div className="heroLeft">
+              <div className="pill">New drop • Made-to-order • No clutter</div>
+              <h1>Little upgrades that make your day feel easier.</h1>
+              <p className="sub">
+                We curate a small collection of women-loved essentials—giftable, practical, and aesthetic—so shopping stays simple.
+              </p>
 
-            {/* Uses FormSubmit.co (free). Replace YOUR_EMAIL_HERE@example.com */}
-            <form action="https://formsubmit.co/aaroncondra12@gmail.com" method="POST">
-              <input type="hidden" name="_subject" value="New Junk Removal Lead" />
-              <input type="hidden" name="_template" value="table" />
-              <input type="hidden" name="_captcha" value="false" />
-
-              <div className="grid2">
-                <div>
-                  <label>Full Name</label>
-                  <input name="name" placeholder="John Smith" required />
-                </div>
-                <div>
-                  <label>Phone</label>
-                  <input name="phone" placeholder="(209) 555-1234" required />
-                </div>
+              <div className="heroCtas">
+                <a className="btn primary" href="#shop">
+                  Shop best sellers
+                </a>
+                <a className="btn ghost" href="#why">
+                  See why it works
+                </a>
               </div>
 
-              <div className="grid2">
-                <div>
-                  <label>Zip Code</label>
-                  <input name="zip" placeholder="95376" required />
-                </div>
-                <div>
-                  <label>When do you need pickup?</label>
-                  <select name="urgency" required defaultValue="">
-                    <option value="">Select…</option>
-                    <option>Today</option>
-                    <option>Next 1–2 days</option>
-                    <option>This week</option>
-                    <option>Not sure / planning</option>
-                  </select>
-                </div>
+              <div className="trustRow">
+                <div className="trustItem">✓ Fast, friendly support</div>
+                <div className="trustItem">✓ Simple returns policy</div>
+                <div className="trustItem">✓ Limited, curated drops</div>
               </div>
+            </div>
 
-              <label>What do you need removed?</label>
-              <select name="type" required defaultValue="">
-                <option value="">Select…</option>
-                <option>Furniture / Mattress</option>
-                <option>Appliances</option>
-                <option>Yard waste</option>
-                <option>Garage cleanout</option>
-                <option>Construction debris</option>
-                <option>Hot tub / heavy item</option>
-                <option>Other</option>
-              </select>
+            <div className="heroCard">
+              <div className="heroCardTop">
+                <div className="miniTitle">Featured bundle</div>
+                <div className="miniBadge">Save 12%</div>
+              </div>
+              <div className="heroCardBody">
+                <div className="bundleName">“Reset & Glow” Kit</div>
+                <div className="bundleDesc">
+                  Scrunchies + journal + steamers. A tiny ritual that actually sticks.
+                </div>
+                <div className="bundleRow">
+                  <div className="bundlePrice">
+                    <div className="priceNow">{formatMoney(54)}</div>
+                    <div className="priceWas">{formatMoney(61)}</div>
+                  </div>
+                  <button className="btn primary" onClick={() => addToCart("p1")}>
+                    Add starter item
+                  </button>
+                </div>
+                <div className="tiny">Tip: Use coupon <b>BLOOM10</b> at checkout (demo).</div>
+              </div>
+            </div>
+          </section>
 
-              <label>Quick details (item count, size, access, photos if you have them)</label>
-              <textarea
-                name="details"
-                placeholder="Example: 1 couch, 1 recliner, 6 bags. Driveway access."
-              />
+          <section id="shop" className="section">
+            <div className="sectionHead">
+              <div>
+                <div className="kicker">Shop</div>
+                <h2>Best sellers (simple, giftable, reliable)</h2>
+              </div>
+              <div className="hint">Click “Add” to build a cart</div>
+            </div>
 
-              <label>Email (optional)</label>
-              <input name="email" placeholder="you@example.com" />
+            <div className="grid">
+              {PRODUCTS.map((p) => (
+                <article key={p.id} className="card">
+                  <div className="cardTop">
+                    <div className="badge">{p.badge}</div>
+                    <div className="price">{formatMoney(p.price)}</div>
+                  </div>
 
-              <button className="submit" type="submit">
-                Get My Quote
+                  <div className="img" aria-hidden="true">
+                    <div className="imgInner" />
+                  </div>
+
+                  <div className="cardBody">
+                    <div className="name">{p.name}</div>
+                    <div className="desc">{p.desc}</div>
+                    <div className="meta">{p.color}</div>
+
+                    <div className="actions">
+                      <button className="btn primary" onClick={() => addToCart(p.id)}>
+                        Add
+                      </button>
+                      <button className="btn ghost" onClick={() => removeFromCart(p.id)} disabled={!cart[p.id]}>
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section id="cart" className="section cartSection">
+            <div className="sectionHead">
+              <div>
+                <div className="kicker">Cart</div>
+                <h2>Your picks</h2>
+              </div>
+              <button className="linkBtn" onClick={clearCart} disabled={!cartItems.length}>
+                Clear cart
               </button>
+            </div>
 
-              <p className="small">
-                By submitting, you agree to be contacted by phone/text about your request.
-                Message/data rates may apply. Reply STOP to opt out.
-              </p>
-            </form>
-          </div>
-        </div>
+            <div className="cartGrid">
+              <div className="cartPanel">
+                {!cartItems.length ? (
+                  <div className="empty">
+                    Your cart is empty. Add a couple items above and then checkout.
+                  </div>
+                ) : (
+                  <div className="cartList">
+                    {cartItems.map((it) => (
+                      <div key={it.id} className="cartRow">
+                        <div>
+                          <div className="cartName">{it.name}</div>
+                          <div className="cartMeta">{it.color}</div>
+                        </div>
+                        <div className="cartQty">
+                          <button className="qtyBtn" onClick={() => removeFromCart(it.id)}>
+                            −
+                          </button>
+                          <div className="qty">{it.qty}</div>
+                          <button className="qtyBtn" onClick={() => addToCart(it.id)}>
+                            +
+                          </button>
+                        </div>
+                        <div className="cartPrice">{formatMoney(it.price * it.qty)}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-        <div className="section cards">
-          <div className="panel card">
-            <h3>Transparent, upfront pricing</h3>
-            <p>
-              Most jobs are quoted by volume, item type, and access. We aim to give clear
-              estimates before scheduling.
-            </p>
-          </div>
-          <div className="panel card">
-            <h3>Fast scheduling</h3>
-            <p>
-              Tell us your timeframe. We prioritize urgent pickups and keep communication
-              simple.
-            </p>
-          </div>
-          <div className="panel card">
-            <h3>Handled safely</h3>
-            <p>
-              Heavy items and awkward loads require the right crew and equipment. Mention
-              stairs, tight access, or backyards.
-            </p>
-          </div>
-        </div>
+              <div className="summary">
+                <div className="summaryBox">
+                  <div className="sumRow">
+                    <span>Subtotal</span>
+                    <span>{formatMoney(subtotal)}</span>
+                  </div>
 
-        <div className="section panel pad18">
-          <p className="kicker">Common questions</p>
-          <p className="h2">FAQ</p>
-          <div className="faq">
-            <details>
-              <summary>How do quotes work?</summary>
-              <p>
-                Pricing usually depends on how much space your items take (truck volume),
-                item type, and how difficult the load-out is (stairs, distance, backyard
-                access).
-              </p>
-            </details>
-            <details>
-              <summary>Do you offer same-day pickup?</summary>
-              <p>
-                Often, yes. Submit your request and choose “Today” for urgency. Availability
-                depends on your area and job size.
-              </p>
-            </details>
-            <details>
-              <summary>What items can be removed?</summary>
-              <p>
-                Furniture, appliances, yard waste, cleanouts, and many construction materials.
-                For hazardous items, ask first.
-              </p>
-            </details>
-          </div>
-        </div>
+                  <div className="sumRow">
+                    <span>Coupon</span>
+                    <span className="muted">Optional</span>
+                  </div>
 
-        <div className="footer">
-          <div>© {year} Local Junk Removal Quotes • All rights reserved</div>
-          <div>
-            <a href="#quote">Request a Quote</a> •{" "}
-            <a href="tel:+12090000000">Call</a>
-          </div>
-        </div>
+                  <input
+                    className="coupon"
+                    value={coupon}
+                    onChange={(e) => setCoupon(e.target.value)}
+                    placeholder="Try BLOOM10"
+                  />
+
+                  <div className="sumRow">
+                    <span>Discount</span>
+                    <span>-{formatMoney(discount)}</span>
+                  </div>
+
+                  <div className="sumTotal">
+                    <span>Total</span>
+                    <span>{formatMoney(total)}</span>
+                  </div>
+
+                  <button className="btn primary full" onClick={checkout} disabled={!cartItems.length}>
+                    Checkout (email for now)
+                  </button>
+
+                  <div className="tiny muted">
+                    Next step: connect Stripe/Shopify so checkout is automatic.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="why" className="section">
+            <div className="sectionHead">
+              <div>
+                <div className="kicker">Why this store works</div>
+                <h2>Small catalog, high trust, easy decisions.</h2>
+              </div>
+            </div>
+
+            <div className="whyGrid">
+              <div className="whyCard">
+                <h3>Curated only</h3>
+                <p>No endless scrolling. We keep 10–20 products max per drop.</p>
+              </div>
+              <div className="whyCard">
+                <h3>Giftable by design</h3>
+                <p>Every item should make a great gift—easy to buy, easy to love.</p>
+              </div>
+              <div className="whyCard">
+                <h3>No inventory needed</h3>
+                <p>Use print-on-demand + dropship suppliers so you don’t hold stock.</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="section newsletter">
+            <div className="newsletterBox">
+              <div>
+                <div className="kicker">Waitlist</div>
+                <h2>Want early access to new drops?</h2>
+                <p className="sub">
+                  Join the list and get first dibs + a launch coupon.
+                </p>
+              </div>
+
+              <form className="newsForm" onSubmit={joinWaitlist}>
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email address"
+                  type="email"
+                />
+                <button className="btn primary" type="submit">
+                  Join
+                </button>
+              </form>
+
+              <div className="tiny muted">
+                Replace the waitlist “mailto” with Mailchimp/FormSubmit later.
+              </div>
+            </div>
+          </section>
+
+          <section id="faq" className="section">
+            <div className="sectionHead">
+              <div>
+                <div className="kicker">FAQ</div>
+                <h2>Quick answers</h2>
+              </div>
+            </div>
+
+            <div className="faq">
+              <details>
+                <summary>Do I need to hold inventory?</summary>
+                <p>
+                  No. Start with print-on-demand items (totes, shirts) + dropship suppliers for small goods.
+                  You only pay suppliers after you sell.
+                </p>
+              </details>
+              <details>
+                <summary>How do I take payments?</summary>
+                <p>
+                  Easiest: Shopify. Cheapest/fast: Stripe Checkout links. We can wire it in next.
+                </p>
+              </details>
+              <details>
+                <summary>What should I sell first?</summary>
+                <p>
+                  Start with a “giftable essentials” theme: hair + self-care + jewelry + journals. Keep it tight.
+                </p>
+              </details>
+            </div>
+          </section>
+
+          <footer className="footer">
+            <div>© {new Date().getFullYear()} {BRAND}. All rights reserved.</div>
+            <div className="footerLinks">
+              <a href="#shop">Shop</a>
+              <span>•</span>
+              <a href="#cart">Cart</a>
+              <span>•</span>
+              <a href="#faq">FAQ</a>
+            </div>
+          </footer>
+        </main>
       </div>
 
       <style jsx global>{`
-        :root {
-          --bg: #0b1220;
-          --card: #111a2e;
-          --text: #eaf0ff;
-          --muted: #b9c5e6;
-          --accent: #4ea1ff;
-          --accent2: #8bffcc;
-          --border: rgba(255, 255, 255, 0.12);
-          --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+        :root{
+          --bg:#0b1220;
+          --panel:#111a2e;
+          --panel2:#0f1730;
+          --text:#eef2ff;
+          --muted:#b9c5e6;
+          --border: rgba(255,255,255,.12);
+          --shadow: 0 18px 55px rgba(0,0,0,.35);
           --radius: 18px;
           --max: 1120px;
-          --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
-            Arial, "Apple Color Emoji", "Segoe UI Emoji";
+          --a: #ff5da2;
+          --b: #9b7bff;
+          --c: #62e9c6;
+          --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
         }
-        * {
-          box-sizing: border-box;
-        }
-        body {
-          margin: 0;
+        *{box-sizing:border-box}
+        html,body{padding:0;margin:0}
+        body{
           font-family: var(--font);
-          background: radial-gradient(
-              1200px 800px at 20% 0%,
-              rgba(78, 161, 255, 0.25),
-              transparent 60%
-            ),
-            radial-gradient(
-              900px 700px at 80% 20%,
-              rgba(139, 255, 204, 0.18),
-              transparent 60%
-            ),
-            var(--bg);
           color: var(--text);
-          line-height: 1.35;
+          background:
+            radial-gradient(1200px 800px at 15% 0%, rgba(255,93,162,.18), transparent 60%),
+            radial-gradient(900px 700px at 85% 20%, rgba(155,123,255,.18), transparent 55%),
+            radial-gradient(900px 700px at 60% 90%, rgba(98,233,198,.12), transparent 55%),
+            var(--bg);
+          line-height:1.35;
         }
-        a {
-          color: inherit;
+        a{color:inherit;text-decoration:none}
+        .page{min-height:100vh}
+        .wrap{max-width:var(--max);margin:0 auto;padding:22px}
+        .header{
+          position:sticky;top:0;z-index:10;
+          backdrop-filter: blur(12px);
+          background: rgba(11,18,32,.55);
+          border-bottom: 1px solid rgba(255,255,255,.08);
         }
-        .wrap {
-          max-width: var(--max);
-          margin: 0 auto;
-          padding: 22px;
+        .headerRow{
+          display:flex;align-items:center;justify-content:space-between;gap:14px;
         }
-        .topbar {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 14px;
-          padding: 14px 0;
+        .brand{display:flex;align-items:center;gap:12px;min-width:280px}
+        .mark{
+          width:36px;height:36px;border-radius:12px;
+          background: linear-gradient(135deg, rgba(255,93,162,.9), rgba(155,123,255,.9));
+          border:1px solid rgba(255,255,255,.22);
+          box-shadow: 0 14px 40px rgba(0,0,0,.25);
         }
-        .brand {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          font-weight: 800;
-          letter-spacing: 0.2px;
+        .brandName{font-weight:900;letter-spacing:.2px}
+        .brandTag{font-size:12px;color:var(--muted);margin-top:2px}
+        .nav{display:flex;gap:14px;color:var(--muted)}
+        .nav a{padding:8px 10px;border-radius:12px}
+        .nav a:hover{background: rgba(255,255,255,.06); color: var(--text)}
+        .cartBtn{
+          display:inline-flex;align-items:center;gap:10px;
+          padding:10px 14px;border-radius:999px;
+          background: rgba(255,255,255,.07);
+          border:1px solid rgba(255,255,255,.12);
+          color: var(--text);
+          cursor:pointer;
+          font-weight:800;
         }
-        .logoBox {
-          width: 34px;
-          height: 34px;
-          border-radius: 12px;
-          background: rgba(78, 161, 255, 0.25);
-          display: grid;
-          place-items: center;
-          border: 1px solid var(--border);
-          font-weight: 900;
+        .cartCount{
+          display:inline-grid;place-items:center;
+          min-width:26px;height:26px;border-radius:999px;
+          background: rgba(255,93,162,.18);
+          border:1px solid rgba(255,93,162,.35);
+          font-weight:900;
         }
-        .badge {
-          font-size: 12px;
-          color: var(--muted);
-          border: 1px solid var(--border);
-          padding: 6px 10px;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.04);
-          margin-top: 6px;
-          display: inline-block;
+
+        .hero{
+          display:grid;
+          grid-template-columns: 1.25fr .9fr;
+          gap:18px;
+          margin-top:18px;
         }
-        .ctaRow {
-          display: flex;
-          gap: 10px;
-          align-items: center;
-        }
-        .btn {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          padding: 12px 16px;
-          border-radius: 999px;
-          border: 1px solid var(--border);
-          background: rgba(255, 255, 255, 0.06);
-          text-decoration: none;
-          font-weight: 700;
-        }
-        .btn.primary {
-          background: linear-gradient(135deg, var(--accent), #2f7bff);
-          border-color: rgba(78, 161, 255, 0.5);
-          box-shadow: 0 10px 30px rgba(78, 161, 255, 0.25);
-        }
-        .btn.secondary {
-          background: rgba(139, 255, 204, 0.1);
-          border-color: rgba(139, 255, 204, 0.3);
-        }
-        .hero {
-          display: grid;
-          grid-template-columns: 1.25fr 0.85fr;
-          gap: 22px;
-          align-items: stretch;
-          margin-top: 10px;
-        }
-        .panel {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid var(--border);
+        .heroLeft{
+          background: rgba(255,255,255,.05);
+          border:1px solid var(--border);
           border-radius: var(--radius);
           box-shadow: var(--shadow);
-          overflow: hidden;
+          padding:26px;
         }
-        .heroLeft {
-          padding: 26px;
-        }
-        h1 {
-          margin: 0 0 10px 0;
-          font-size: clamp(30px, 4vw, 54px);
-          line-height: 1.05;
-          letter-spacing: -0.6px;
-        }
-        .sub {
-          margin: 0 0 18px 0;
+        .pill{
+          display:inline-flex;align-items:center;gap:8px;
+          padding:8px 12px;border-radius:999px;
+          border:1px solid rgba(255,255,255,.14);
+          background: rgba(255,255,255,.06);
           color: var(--muted);
-          font-size: clamp(15px, 1.5vw, 18px);
+          font-weight:700;
+          font-size:12px;
         }
-        .bullets {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 10px;
-          margin: 18px 0 0;
+        h1{
+          margin:14px 0 10px;
+          font-size: clamp(32px, 4vw, 56px);
+          line-height:1.05;
+          letter-spacing:-.8px;
         }
-        .pill {
-          border: 1px solid var(--border);
-          background: rgba(255, 255, 255, 0.04);
-          padding: 10px 12px;
-          border-radius: 14px;
+        .sub{color:var(--muted);margin:0;font-size:16px;max-width:55ch}
+        .heroCtas{display:flex;gap:10px;align-items:center;margin-top:18px;flex-wrap:wrap}
+        .btn{
+          display:inline-flex;align-items:center;justify-content:center;
+          padding:12px 16px;border-radius:999px;
+          border:1px solid rgba(255,255,255,.14);
+          background: rgba(255,255,255,.06);
+          font-weight:900;
+          cursor:pointer;
+        }
+        .btn.primary{
+          border-color: rgba(255,93,162,.45);
+          background: linear-gradient(135deg, rgba(255,93,162,.95), rgba(155,123,255,.95));
+          box-shadow: 0 14px 45px rgba(255,93,162,.18);
+        }
+        .btn.ghost{
+          background: rgba(255,255,255,.04);
           color: var(--text);
-          font-weight: 650;
-          font-size: 14px;
         }
-        .note {
-          margin-top: 14px;
-          color: var(--muted);
-          font-size: 13px;
+        .btn:disabled{opacity:.5;cursor:not-allowed}
+        .trustRow{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;color:var(--muted);font-size:13px}
+        .trustItem{
+          padding:8px 10px;border-radius:12px;
+          background: rgba(255,255,255,.04);
+          border: 1px solid rgba(255,255,255,.10);
         }
-        .formBox {
-          padding: 20px;
+
+        .heroCard{
+          background: rgba(255,255,255,.05);
+          border:1px solid var(--border);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          overflow:hidden;
         }
-        .formTitle {
-          font-size: 18px;
-          font-weight: 800;
-          margin: 0 0 6px;
+        .heroCardTop{
+          display:flex;align-items:center;justify-content:space-between;
+          padding:14px 16px;
+          border-bottom: 1px solid rgba(255,255,255,.10);
+          background: rgba(255,255,255,.03);
         }
-        .formSub {
-          margin: 0 0 14px;
-          color: var(--muted);
-          font-size: 13px;
+        .miniTitle{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.18em}
+        .miniBadge{
+          font-size:12px;font-weight:900;
+          padding:6px 10px;border-radius:999px;
+          background: rgba(98,233,198,.10);
+          border: 1px solid rgba(98,233,198,.26);
+          color: #d9fff6;
         }
-        form {
-          display: grid;
-          gap: 10px;
+        .heroCardBody{padding:16px}
+        .bundleName{font-weight:950;font-size:20px;margin-bottom:6px}
+        .bundleDesc{color:var(--muted);font-size:13px;margin-bottom:14px}
+        .bundleRow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+        .bundlePrice{display:flex;align-items:baseline;gap:10px}
+        .priceNow{font-size:22px;font-weight:950}
+        .priceWas{color:var(--muted);text-decoration:line-through;font-size:13px}
+        .tiny{font-size:12px;margin-top:12px;color:var(--muted)}
+        .tiny b{color:var(--text)}
+
+        .section{margin-top:26px}
+        .sectionHead{
+          display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
+          margin-bottom:12px;
         }
-        label {
-          font-size: 12px;
-          color: var(--muted);
-        }
-        input,
-        select,
-        textarea {
-          width: 100%;
-          padding: 12px 12px;
-          border-radius: 12px;
-          border: 1px solid var(--border);
-          background: rgba(0, 0, 0, 0.2);
-          color: var(--text);
-          outline: none;
-        }
-        textarea {
-          min-height: 88px;
-          resize: vertical;
-        }
-        .grid2 {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 10px;
-        }
-        .small {
-          font-size: 11px;
-          color: var(--muted);
-          line-height: 1.25;
-        }
-        .submit {
-          margin-top: 6px;
-          padding: 12px 14px;
-          border-radius: 12px;
-          border: 0;
-          font-weight: 850;
-          cursor: pointer;
-          background: linear-gradient(135deg, var(--accent2), #4ea1ff);
-          color: #04101f;
-        }
-        .section {
-          margin-top: 22px;
-        }
-        .cards {
-          display: grid;
+        .kicker{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.18em;margin-bottom:6px}
+        h2{margin:0;font-size:26px;letter-spacing:-.3px}
+        .hint{color:var(--muted);font-size:12px}
+
+        .grid{
+          display:grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 14px;
+          gap:14px;
         }
-        .card {
-          padding: 16px;
+        .card{
+          background: rgba(255,255,255,.05);
+          border:1px solid rgba(255,255,255,.12);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          overflow:hidden;
         }
-        .card h3 {
-          margin: 0 0 6px;
-          font-size: 16px;
+        .cardTop{
+          display:flex;align-items:center;justify-content:space-between;
+          padding:12px 14px;
+          border-bottom: 1px solid rgba(255,255,255,.10);
         }
-        .card p {
-          margin: 0;
+        .badge{
+          font-size:12px;
+          padding:6px 10px;border-radius:999px;
+          background: rgba(255,255,255,.06);
+          border:1px solid rgba(255,255,255,.12);
           color: var(--muted);
-          font-size: 13px;
+          font-weight:800;
         }
-        .kicker {
+        .price{font-weight:950}
+        .img{
+          height:150px;
+          background:
+            radial-gradient(300px 140px at 20% 20%, rgba(255,93,162,.18), transparent 60%),
+            radial-gradient(240px 140px at 80% 30%, rgba(155,123,255,.18), transparent 60%),
+            radial-gradient(280px 160px at 60% 90%, rgba(98,233,198,.12), transparent 60%),
+            rgba(255,255,255,.03);
+          display:grid;place-items:center;
+        }
+        .imgInner{
+          width:62%;height:62%;
+          border-radius: 22px;
+          border:1px solid rgba(255,255,255,.14);
+          background: rgba(0,0,0,.14);
+        }
+        .cardBody{padding:14px}
+        .name{font-weight:950;margin-bottom:6px}
+        .desc{color:var(--muted);font-size:13px;margin-bottom:10px}
+        .meta{color:rgba(255,255,255,.75);font-size:12px;margin-bottom:12px}
+        .actions{display:flex;gap:10px}
+
+        .cartSection .cartGrid{
+          display:grid;
+          grid-template-columns: 1.35fr .65fr;
+          gap:14px;
+        }
+        .cartPanel{
+          background: rgba(255,255,255,.05);
+          border:1px solid rgba(255,255,255,.12);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          padding:14px;
+        }
+        .empty{color:var(--muted);padding:14px}
+        .cartList{display:grid;gap:10px}
+        .cartRow{
+          display:flex;align-items:center;justify-content:space-between;gap:12px;
+          padding:12px;border-radius:14px;
+          background: rgba(255,255,255,.04);
+          border:1px solid rgba(255,255,255,.10);
+        }
+        .cartName{font-weight:900}
+        .cartMeta{color:var(--muted);font-size:12px;margin-top:2px}
+        .cartQty{display:flex;align-items:center;gap:10px}
+        .qtyBtn{
+          width:34px;height:34px;border-radius:12px;
+          border:1px solid rgba(255,255,255,.14);
+          background: rgba(255,255,255,.06);
+          color: var(--text);
+          font-weight:900;
+          cursor:pointer;
+        }
+        .qty{min-width:18px;text-align:center;font-weight:900}
+        .cartPrice{font-weight:950}
+        .summary{
+          display:flex;align-items:flex-start;
+        }
+        .summaryBox{
+          width:100%;
+          background: rgba(255,255,255,.05);
+          border:1px solid rgba(255,255,255,.12);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          padding:14px;
+        }
+        .sumRow{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;margin-bottom:10px}
+        .sumTotal{
+          display:flex;justify-content:space-between;align-items:center;
+          font-weight:950;font-size:18px;
+          margin:12px 0;
+        }
+        .coupon{
+          width:100%;
+          padding:12px 12px;
+          border-radius:14px;
+          border:1px solid rgba(255,255,255,.14);
+          background: rgba(0,0,0,.22);
+          color: var(--text);
+          outline:none;
+          margin: 2px 0 10px;
+        }
+        .full{width:100%}
+
+        .linkBtn{
+          background: transparent;
+          border:0;
           color: var(--muted);
-          font-size: 12px;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          margin: 0 0 8px;
+          cursor:pointer;
+          font-weight:800;
         }
-        .h2 {
-          font-size: 24px;
-          margin: 0 0 12px;
+        .linkBtn:hover{color:var(--text)}
+        .linkBtn:disabled{opacity:.5;cursor:not-allowed}
+
+        .whyGrid{
+          display:grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap:14px;
         }
-        .faq {
-          display: grid;
-          gap: 10px;
+        .whyCard{
+          background: rgba(255,255,255,.05);
+          border:1px solid rgba(255,255,255,.12);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          padding:16px;
         }
-        details {
-          border: 1px solid var(--border);
-          background: rgba(255, 255, 255, 0.04);
+        .whyCard h3{margin:0 0 8px;font-size:16px}
+        .whyCard p{margin:0;color:var(--muted);font-size:13px}
+
+        .newsletterBox{
+          background: linear-gradient(135deg, rgba(255,93,162,.12), rgba(155,123,255,.12), rgba(98,233,198,.08));
+          border:1px solid rgba(255,255,255,.14);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          padding:18px;
+          display:grid;
+          gap:12px;
+        }
+        .newsForm{
+          display:flex;gap:10px;flex-wrap:wrap;
+        }
+        .newsForm input{
+          flex:1;
+          min-width:240px;
+          padding:12px 12px;
+          border-radius:14px;
+          border:1px solid rgba(255,255,255,.14);
+          background: rgba(0,0,0,.22);
+          color: var(--text);
+          outline:none;
+        }
+
+        .faq{
+          display:grid;gap:10px;
+        }
+        details{
+          background: rgba(255,255,255,.05);
+          border:1px solid rgba(255,255,255,.12);
           border-radius: 14px;
-          padding: 12px 14px;
+          padding:12px 14px;
         }
-        summary {
-          cursor: pointer;
-          font-weight: 750;
+        summary{cursor:pointer;font-weight:900}
+        details p{margin:10px 0 0;color:var(--muted);font-size:13px}
+
+        .footer{
+          margin:26px 0 10px;
+          padding:18px 0 10px;
+          border-top:1px solid rgba(255,255,255,.10);
+          color:var(--muted);
+          display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+          font-size:12px;
         }
-        details p {
-          color: var(--muted);
-          font-size: 13px;
-          margin: 10px 0 0;
-        }
-        .pad18 {
-          padding: 18px;
-        }
-        .footer {
-          margin: 26px 0 10px;
-          color: var(--muted);
-          font-size: 12px;
-          display: flex;
-          justify-content: space-between;
-          gap: 12px;
-          flex-wrap: wrap;
-          opacity: 0.95;
-        }
-        @media (max-width: 980px) {
-          .hero {
-            grid-template-columns: 1fr;
-          }
-          .bullets {
-            grid-template-columns: 1fr;
-          }
-          .cards {
-            grid-template-columns: 1fr;
-          }
-          .grid2 {
-            grid-template-columns: 1fr;
-          }
+        .footerLinks{display:flex;gap:10px;align-items:center}
+        .footerLinks a:hover{color:var(--text)}
+
+        @media (max-width: 980px){
+          .nav{display:none}
+          .hero{grid-template-columns:1fr}
+          .grid{grid-template-columns:1fr}
+          .whyGrid{grid-template-columns:1fr}
+          .cartSection .cartGrid{grid-template-columns:1fr}
         }
       `}</style>
     </>
