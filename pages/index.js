@@ -64,7 +64,7 @@ export default function Home() {
             </p>
 
             {/* Uses FormSubmit.co (free). Replace YOUR_EMAIL_HERE@example.com */}
-            <form action="https://formsubmit.co/YOUR_EMAIL_HERE@example.com" method="POST">
+            <form action="https://formsubmit.co/aaroncondra12@gmail.com" method="POST">
               <input type="hidden" name="_subject" value="New Junk Removal Lead" />
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
